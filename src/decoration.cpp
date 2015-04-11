@@ -31,12 +31,12 @@ Decoration::~Decoration() {
     delete quit;
 }
 
-void Decoration::enterEvent(QEvent* event) {
+void Decoration::enterEvent(QEvent*) {
     add->setVisible(true);
     quit->setVisible(true);
 }
 
-void Decoration::leaveEvent(QEvent* event) {
+void Decoration::leaveEvent(QEvent*) {
     add->setVisible(false);
     quit->setVisible(false);
 }

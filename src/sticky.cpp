@@ -73,7 +73,7 @@ void Sticky::mousePressEvent(QMouseEvent* event){
     }
 }
 
-void Sticky::mouseReleaseEvent(QMouseEvent* event) {
+void Sticky::mouseReleaseEvent(QMouseEvent*) {
     dragging = false;
 }
 
