@@ -1,9 +1,16 @@
 #include "sticky.h"
 
+#include <array>
 #include <QGraphicsDropShadowEffect>
 #include <QGridLayout>
+#include <random>
+#include <sstream>
+#include <tuple>
 
-using namespace std;
+const std::array<std::tuple<const char*, const char*>, 3> colors =
+    {std::make_tuple<const char*, const char*>("#D5DB5A", "#E1EB31"),
+     std::make_tuple<const char*, const char*>("#53B3B5", "#68D7D9"),
+     std::make_tuple<const char*, const char*>("#D90D8B", "#FC30AE")};
 
 Sticky::Sticky() {
     window = new QWidget(this);
@@ -20,34 +27,7 @@ Sticky::Sticky() {
     layout->setContentsMargins(0, 0, 0, 0);
     layout->setSpacing(0);
 
-    setStyleSheet(R"(
-* {
-    background-color: #D5DB5A;
-}
-
-QPushButton {
-    font: 18px;
-    border: none;
-}
-
-QPushButton:hover {
-    font: bold;
-}
-
-QPushButton:focus {
-    outline: none;
-}
-
-QSizeGrip {
-    background-color: #E1EB31;
-}
-
-QTextEdit {
-    border: none;
-    background-color: #E1EB31;
-    font: 24px "Special Elite";
-}
-    )");
+    setStyleSheet(getStylesheet(rand()).c_str());
 
     setCentralWidget(window);
     setWindowFlags(Qt::FramelessWindowHint);
@@ -84,4 +64,38 @@ void Sticky::mouseMoveEvent(QMouseEvent* event){
 
         this->move(newpos);
     }
+}
+
+std::string Sticky::getStylesheet(int rand) {
+    int i = rand % colors.size();
+    std::ostringstream ss;
+    ss << R"(
+* {
+    background-color: )" << std::get<0>(colors[i]) << R"(;
+}
+
+QPushButton {
+    font: 18px;
+    border: none;
+}
+
+QPushButton:hover {
+    font: bold;
+}
+
+QPushButton:focus {
+    outline: none;
+}
+
+QSizeGrip {
+    background-color: )" << std::get<1>(colors[i]) << R"(;
+}
+
+QTextEdit {
+    border: none;
+    background-color: )" << std::get<1>(colors[i]) << R"(;
+    font: 24px "Special Elite";
+}
+    )";
+    return ss.str();
 }

@@ -19,6 +19,7 @@ public:
     void mouseReleaseEvent(QMouseEvent* event);
     void mouseMoveEvent(QMouseEvent* event);
 private:
+    std::string getStylesheet(int rand);
     Decoration* decoration;
     QSizeGrip* grip;
     QTextEdit* text;
