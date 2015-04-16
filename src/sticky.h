@@ -6,14 +6,16 @@
 #include <QMouseEvent>
 #include <QObject>
 #include <QSizeGrip>
-#include <QTextEdit>
+#include <QPlainTextEdit>
 #include <QWidget>
+#include <string>
 #include "decoration.h"
 
 class Sticky : public QMainWindow {
     Q_OBJECT
 public:
-    Sticky();
+    Sticky(const QString file = 0);
+    Sticky(const Sticky& sticky);
     ~Sticky();
     void mousePressEvent(QMouseEvent* event);
     void mouseReleaseEvent(QMouseEvent* event);
@@ -22,7 +24,7 @@ private:
     std::string getStylesheet(int rand);
     Decoration* decoration;
     QSizeGrip* grip;
-    QTextEdit* text;
+    QPlainTextEdit* text;
     QWidget* window;
 
     QPoint _mpos;

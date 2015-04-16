@@ -1,7 +1,7 @@
 #include "sticky.h"
 
 #include <array>
-#include <QGraphicsDropShadowEffect>
+#include <QDebug>
 #include <QGridLayout>
 #include <random>
 #include <sstream>
@@ -12,12 +12,12 @@ const std::array<std::tuple<const char*, const char*>, 3> colors =
      std::make_tuple<const char*, const char*>("#53B3B5", "#68D7D9"),
      std::make_tuple<const char*, const char*>("#D90D8B", "#FC30AE")};
 
-Sticky::Sticky() {
+Sticky::Sticky(const QString file) {
     window = new QWidget(this);
-
     decoration = new Decoration(window);
     decoration->setFixedHeight(20);
-    text = new QTextEdit(window);
+    text = new QPlainTextEdit(window);
+    text->setPlainText(file);
     grip = new QSizeGrip(window);
 
     QGridLayout* layout = new QGridLayout(window);
@@ -31,17 +31,20 @@ Sticky::Sticky() {
 
     setCentralWidget(window);
     setWindowFlags(Qt::FramelessWindowHint);
-    setAttribute(Qt::WA_TranslucentBackground); //enable MainWindow to be transparent
-    QGraphicsDropShadowEffect* effect = new QGraphicsDropShadowEffect();
-    effect->setBlurRadius(5);
-    window->setGraphicsEffect(effect);
 
     dragging = false;
 }
 
+Sticky::Sticky(const Sticky& sticky)
+    : decoration(sticky.decoration),
+      text(sticky.text),
+      grip(sticky.grip),
+      window(sticky.window) {}
+
 Sticky::~Sticky() {
     delete decoration;
     delete text;
+    delete grip;
     delete window;
 }
 
@@ -91,7 +94,7 @@ QSizeGrip {
     background-color: )" << std::get<1>(colors[i]) << R"(;
 }
 
-QTextEdit {
+QPlainTextEdit {
     border: none;
     background-color: )" << std::get<1>(colors[i]) << R"(;
     font: 24px "Special Elite";
